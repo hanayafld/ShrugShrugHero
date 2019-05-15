@@ -17,13 +17,14 @@ public class TestMetronome : MonoBehaviour
     {
         Debug.Log("씬시작");
 
-        //this.dim.SetActive(true);
-        FadeIn();
+        this.dim.SetActive(true);
     }
 
     void Start()
     {
         Debug.Log("메트로놈 테스트");
+
+        this.FadeIn(this.dim);
 
         this.btnMusicStart.onClick.AddListener(()=> 
         {
@@ -44,17 +45,22 @@ public class TestMetronome : MonoBehaviour
        
     }
 
-
-    public IEnumerator FadeOut()
+    private void FadeOut(GameObject fade)
     {
-        var color = this.dim.GetComponent<Image>().color;
+        StartCoroutine(this.FadeOutImpl(fade));
+    }
+
+    private IEnumerator FadeOutImpl(GameObject fade)
+    {
+        Debug.Log("페이드아웃");
+        var color = fade.GetComponent<Image>().color;
         float alpha = color.a;
 
         while (true)
         {
             alpha -= 0.016f;
             color.a = alpha;
-            this.dim.GetComponent<Image>().color = color;
+            fade.GetComponent<Image>().color = color;
 
             if (alpha <= 0)
             {
@@ -66,16 +72,22 @@ public class TestMetronome : MonoBehaviour
         //this.OnFadeOutComplete();
     }
 
-    public IEnumerator FadeIn()
+    private void FadeIn(GameObject fade)
     {
-        var color = this.dim.GetComponent<Image>().color;
+        StartCoroutine(this.FadeInImpl(fade));
+    }
+
+    private IEnumerator FadeInImpl(GameObject fade)
+    {
+        Debug.Log("페이드인");
+        var color = fade.GetComponent<Image>().color;
         float alpha = color.a;
 
         while (true)
         {
             alpha += 0.016f;
             color.a = alpha;
-            this.dim.GetComponent<Image>().color = color;
+            fade.GetComponent<Image>().color = color;
 
             if (alpha >= 1)
             {
